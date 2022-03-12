@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const data = [
   {
@@ -48,11 +48,12 @@ const data = [
   },
 ];
 
-function DrumButton({ idSound, letter, source }) {
+function DrumButton({ getClicked, idSound, letter, source }) {
   function handleClick(e) {
     const audio = document.querySelector(`#${e.target.innerText}`);
     audio.currentTime = 0;
     audio.play();
+    getClicked(e.target.id);
   }
   return (
     <td>
@@ -69,7 +70,7 @@ function DrumButton({ idSound, letter, source }) {
   );
 }
 
-function DrumPad() {
+function DrumPad({ getClicked }) {
   const DrumPadContainer = [];
   let rowId = 0;
   for (let r = 0; r < 3; r++) {
@@ -78,6 +79,7 @@ function DrumPad() {
       row.push(
         <DrumButton
           key={data[3 * r + col].id}
+          getClicked={getClicked}
           idSound={data[3 * r + col].id}
           letter={data[3 * r + col].letter}
           source={data[3 * r + col].src}
@@ -100,9 +102,12 @@ function DrumPad() {
   );
 }
 
-function DrumDisplay() {}
-
 function App() {
+  const [display, setDisplay] = useState("Display");
+  function getClicked(e) {
+    setDisplay(e);
+  }
+
   useEffect(() => {
     function playDrum(e) {
       if (/[0-9]/.test(e.key)) return;
@@ -141,7 +146,7 @@ function App() {
           display: "flex",
         }}
       >
-        <DrumPad />
+        <DrumPad getClicked={getClicked} />
         <div
           id="display-container"
           style={{
@@ -158,7 +163,7 @@ function App() {
               textAlign: "center",
             }}
           >
-            Display
+            {display}
           </div>
         </div>
       </div>
