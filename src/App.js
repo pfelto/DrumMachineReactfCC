@@ -103,7 +103,22 @@ function DrumPad() {
 function DrumDisplay() {}
 
 function App() {
-  useEffect(() => {});
+  useEffect(() => {
+    function playDrum(e) {
+      if (/[0-9]/.test(e.key)) return;
+      const key = e.key.toUpperCase();
+      const audio = document.querySelector(`#${key}`);
+      if (!audio) return;
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+    document.addEventListener("keydown", playDrum);
+
+    return function () {
+      document.removeEventListener("keydown", playDrum);
+    };
+  });
 
   return (
     <div
