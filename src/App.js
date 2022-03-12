@@ -48,152 +48,59 @@ const data = [
   },
 ];
 
-function DrumPad() {
+function DrumButton({ idSound, letter, source }) {
   function handleClick(e) {
     const audio = document.querySelector(`#${e.target.innerText}`);
     audio.currentTime = 0;
     audio.play();
   }
   return (
+    <td>
+      <button
+        onClick={(e) => handleClick(e)}
+        className="drum-pad"
+        id={idSound}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <audio className="clip" id={letter} src={source}></audio>
+        {letter}
+      </button>
+    </td>
+  );
+}
+
+function DrumPad() {
+  const DrumPadContainer = [];
+  let rowId = 0;
+  for (let r = 0; r < 3; r++) {
+    const row = [];
+    for (let col = 0; col < 3; col++) {
+      row.push(
+        <DrumButton
+          key={data[3 * r + col].id}
+          idSound={data[3 * r + col].id}
+          letter={data[3 * r + col].letter}
+          source={data[3 * r + col].src}
+        />
+      );
+    }
+    DrumPadContainer.push(
+      <tr id={rowId} key={rowId}>
+        {row}
+      </tr>
+    );
+    rowId++;
+  }
+  return (
     <div id="drum-pad-container" style={{ flex: 2, marginRight: ".5%" }}>
       <table style={{ height: "100%", width: "100%" }}>
-        <tbody>
-          <tr>
-            <td>
-              <button
-                onClick={(e) => handleClick(e)}
-                className="drum-pad"
-                id="boom"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio
-                  className="clip"
-                  id="Q"
-                  src="https://www.myinstants.com/media/sounds/snare.mp3"
-                ></audio>
-                Q
-              </button>
-            </td>
-            <td>
-              <button
-                className="drum-pad"
-                id="bass1"
-                style={{ height: "100%", width: "100%" }}
-                onClick={(e) => handleClick(e)}
-              >
-                <audio
-                  className="clip"
-                  id="W"
-                  src="https://www.myinstants.com/media/sounds/bass-drum.mp3"
-                ></audio>
-                W
-              </button>
-            </td>
-            <td>
-              <button
-                onClick={(e) => handleClick(e)}
-                className="drum-pad"
-                id="hihat"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio
-                  className="clip"
-                  id="E"
-                  src="https://www.myinstants.com/media/sounds/hi-hat.mp3"
-                ></audio>
-                E
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button
-                onClick={(e) => handleClick(e)}
-                className="drum-pad"
-                id="tomtom"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio
-                  className="clip"
-                  id="A"
-                  src="https://www.myinstants.com/media/sounds/tom-tom.mp3"
-                ></audio>
-                A
-              </button>
-            </td>
-            <td>
-              <button
-                onClick={(e) => handleClick(e)}
-                className="drum-pad"
-                id="kick"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio
-                  className="clip"
-                  id="S"
-                  src="https://www.myinstants.com/media/sounds/kick.mp3"
-                ></audio>
-                S
-              </button>
-            </td>
-            <td>
-              <button
-                className="drum-pad"
-                id="ride"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio className="clip" id="D" src="sounds/ride.wav"></audio>D
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button
-                className="drum-pad"
-                id="snare"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio className="clip" id="Z" src="sounds/snare.wav"></audio>Z
-              </button>
-            </td>
-            <td>
-              <button
-                onClick={(e) => handleClick(e)}
-                className="drum-pad"
-                id="drumbeat"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio
-                  className="clip"
-                  id="X"
-                  src="https://www.myinstants.com/media/sounds/drum.mp3"
-                ></audio>
-                X
-              </button>
-            </td>
-            <td>
-              <button
-                onClick={(e) => handleClick(e)}
-                className="drum-pad"
-                id="laser"
-                style={{ height: "100%", width: "100%" }}
-              >
-                <audio
-                  className="clip"
-                  id="C"
-                  src="https://www.myinstants.com/media/sounds/laser.mp3"
-                ></audio>{" "}
-                C
-              </button>
-            </td>
-          </tr>
-        </tbody>
+        <tbody>{DrumPadContainer}</tbody>
       </table>
     </div>
   );
 }
 
-function DrumButton() {}
+function DrumDisplay() {}
 
 function App() {
   useEffect(() => {});
